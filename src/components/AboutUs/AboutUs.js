@@ -1,8 +1,11 @@
 import React from 'react';
+import Footer from '../Shared/Footer/Footer';
+import Header from '../Shared/Header/Header';
 
 const AboutUs = () => {
     return (
         <div>
+            <Header />
             <h1 className="mt-5" >This is About Us</h1>
             <hr className="border border-success" />
             <hr className="border border-success" />
@@ -30,6 +33,7 @@ const AboutUs = () => {
             </div>
             <hr className="border border-success" />
             <hr className="border border-success" />
+            <Footer />
         </div >
     );
 };

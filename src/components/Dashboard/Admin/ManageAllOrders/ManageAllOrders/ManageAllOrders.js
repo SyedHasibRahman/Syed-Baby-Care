@@ -14,6 +14,29 @@ const ManageAllOrders = () => {
             .then(data => setOrders(data))
     }, []);
     // const detail = orders.detail;
+    const handleDelete = _id => {
+        const deleteMassege = window.confirm("Delete the item?");
+
+        if (deleteMassege) {
+            const url = `http://localhost:5000/orders/${_id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.deletedCount) {
+                        const remaining = orders.filter(order => order._id !== _id);
+                        setOrders(remaining);
+
+                    }
+
+                })
+        }
+
+    }
+
+    // -------------Delete Confirmation 
     console.log(orders);
     return (
         <div className="mt-5 MyOrders container">
@@ -34,7 +57,7 @@ const ManageAllOrders = () => {
                                         </div>
                                         <div className="card-footer">
                                             <small className="text-muted">
-                                                <button className="btn-danger">Delete</button>
+                                                <button onClick={ () => handleDelete(order._id) } className="btn-danger">Delete</button>
                                             </small>
                                         </div>
                                     </div>

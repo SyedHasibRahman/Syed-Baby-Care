@@ -8,7 +8,7 @@ import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "fir
 
 const Login = () => {
     const auth = getAuth();
-    const { signInUsingGoogle } = useAuth();
+    const { signInUsingGoogle, saveUser } = useAuth();
     const [error, setError] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,6 +19,8 @@ const Login = () => {
     const handleGoogleLogin = () => {
         signInUsingGoogle()
             .then(result => {
+                const user = result.user;
+                saveUser(user.email, user.displayName, 'PUT')
                 history.push(redirect_uri);
             });
         // .finally(() => setIsLoading(false));
@@ -61,26 +63,26 @@ const Login = () => {
 
     return (
         <div>
-            {/* login form  */}
+            {/* login form  */ }
             <main className="container my-5">
                 <div className="row">
                     <section className="col-md-6 my-5 offset-md-3">
 
                         <div className="card shadow p-5">
-                            <form onSubmit={signInByEmailPassword}>
+                            <form onSubmit={ signInByEmailPassword }>
 
                                 <h3 className="text-center text-uppercase mb-4">Login Please</h3>
-                                <h4 className="text-center text-danger">{error}</h4>
+                                <h4 className="text-center text-danger">{ error }</h4>
                                 <hr />
 
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input onBlur={handleEmailchange} type="email" placeholder="Email" className="form-control" required />
+                                    <input onBlur={ handleEmailchange } type="email" placeholder="Email" className="form-control" required />
                                 </div>
 
                                 <label htmlFor="Password">Password</label>
                                 <div className="input-group mb-3">
-                                    <input onBlur={handlePasswordChange} type="password" name="password" id="password" className="form-control" placeholder="Enter Password" aria-label="Enter Password" aria-describedby="basic-addon2" required />
+                                    <input onBlur={ handlePasswordChange } type="password" name="password" id="password" className="form-control" placeholder="Enter Password" aria-label="Enter Password" aria-describedby="basic-addon2" required />
                                     <div className="input-group-append">
                                     </div>
                                 </div>
@@ -90,13 +92,13 @@ const Login = () => {
                                 <p className="mt-3 text-white">Don't have an Account ? <Link to="/Registration" className="text-white"> Create Here</Link></p>
 
                             </form>
-                            <button onClick={handleGoogleLogin} className="btn btn-danger">Google Login</button> <br />
-                            <button onClick={handleResetPassword} className="btn btn-danger">ResetPassword</button>
+                            <button onClick={ handleGoogleLogin } className="btn btn-danger">Google Login</button> <br />
+                            <button onClick={ handleResetPassword } className="btn btn-danger">ResetPassword</button>
                         </div>
                     </section>
                 </div>
             </main>
-            {/* login form  */}
+            {/* login form  */ }
 
         </div>
     );

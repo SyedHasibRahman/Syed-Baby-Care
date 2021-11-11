@@ -7,21 +7,24 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateP
 
 const Registration = () => {
     const auth = getAuth();
-    const { signInUsingGoogle } = useAuth();
+    const { signInUsingGoogle, saveUser, users } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setpassword] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
-    const [setIsLoading] = useState(true);
+    // const [setIsLoading] = useState(true);
+    // console.log(users.email);
     const location = useLocation();
     const history = useHistory();
     const redirect_uri = location.state?.from || '/';
     const handleGoogleLogin = () => {
         signInUsingGoogle()
             .then(result => {
+                const user = result.user;
+                saveUser(user.email, user.displayName, 'PUT')
                 history.push(redirect_uri);
             })
-            .finally(() => setIsLoading(false));
+        // .finally(() => setIsLoading(false));
     }
     const handleNameChange = e => {
         setName(e.target.value);
@@ -47,6 +50,7 @@ const Registration = () => {
         }
         createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
+                saveUser(email, name, 'POST');
                 history.push(redirect_uri);
                 window.location.reload();
                 setError('');
@@ -69,31 +73,31 @@ const Registration = () => {
     }
     return (
         <div>
-            {/* login form  */}
+            {/* login form  */ }
             <main className="container my-5">
                 <div className="row">
                     <section className="col-md-6 my-5 offset-md-3">
                         <div className="card shadow p-5">
-                            <form onSubmit={handleRegistration}>
+                            <form onSubmit={ handleRegistration }>
 
                                 <h3 className="text-center text-uppercase mb-4">Registration Please</h3>
 
-                                <h4 className="text-center text-danger">{error}</h4>
+                                <h4 className="text-center text-danger">{ error }</h4>
                                 <hr />
 
                                 <div className="form-group">
                                     <label>Full Name</label>
-                                    <input onBlur={handleNameChange} type="text" placeholder="Full Name" className="form-control" />
+                                    <input onBlur={ handleNameChange } type="text" placeholder="Full Name" className="form-control" />
                                 </div>
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input onBlur={handleEmailchange} type="email" placeholder="Email" className="form-control" required />
+                                    <input onBlur={ handleEmailchange } type="email" placeholder="Email" className="form-control" required />
                                 </div>
 
                                 <label htmlFor="Password">Password</label>
                                 <div className="input-group mb-3">
 
-                                    <input onBlur={handlePasswordChange} type="password" name="password" className="form-control" placeholder="Enter Password" required />
+                                    <input onBlur={ handlePasswordChange } type="password" name="password" className="form-control" placeholder="Enter Password" required />
                                     <div className="input-group-append">
                                     </div>
                                 </div>
@@ -103,12 +107,12 @@ const Registration = () => {
                                 <p className="mt-3 text-white">Already have an Account ? <Link to="/login" className="text-white"> Login Here</Link></p>
 
                             </form>
-                            <button onClick={handleGoogleLogin} className="btn btn-danger">Google Login</button>
+                            <button onClick={ handleGoogleLogin } className="btn btn-danger">Google Login</button>
                         </div>
                     </section>
                 </div>
             </main>
-            {/* login form  */}
+            {/* login form  */ }
 
         </div>
     );

@@ -6,23 +6,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import useAuth from '../../../hooks/useAuth';
-import { Button, Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import {
-    BrowserRouter as Router,
     Switch,
-    Route,
     Link,
-    useParams,
     useRouteMatch
 } from "react-router-dom";
 import MakeAdmin from '../Admin/MakeAdmin/MakeAdmin';
@@ -34,12 +25,13 @@ import PrivateRoute from '../../Auth/PrivateRoute/PrivateRoute';
 import Pay from '../Users/Pay/Pay';
 import Review from '../Users/Review/Review';
 import MyOrders from '../Users/MyOrders/MyOrders/MyOrders';
+import AdminRoute from '../../Auth/AdminRoute/AdminRoute';
 
 const drawerWidth = 200;
 
 function Dashboard(props) {
     let { path, url } = useRouteMatch();
-    const { users, logOut } = useAuth();
+    const { users, logOut, admin } = useAuth();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -53,19 +45,25 @@ function Dashboard(props) {
             </Toolbar >
             <Divider />
             <Box>
-                {/* For Admin */ }
+                <h5>Comon Path</h5>
                 <Link to="/"><Button variant="text">Back To Home</Button> </Link>
                 <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link>
-                <Link to={ `${url}/ManageAllOrders` }> <Button variant="text">Manage All Orders</Button> </Link>
-                <Link to={ `${url}/AddAProduct` }> <Button variant="text">Add A Product</Button> </Link>
-                <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
-                <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
             </Box>
+            { admin &&
+                <Box>
+                    {/* For Admin */ }
+
+                    <h5>Admin Panel</h5>
+                    <Link to={ `${url}/ManageAllOrders` }> <Button variant="text">Manage All Orders</Button> </Link>
+                    <Link to={ `${url}/AddAProduct` }> <Button variant="text">Add A Product</Button> </Link>
+                    <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
+                    <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
+                </Box>
+            }
             <br />
             <Box>
                 {/* For User */ }
-                <Link to="/"><Button variant="text">Back To Home</Button> </Link><br />
-                <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link><br />
+                <h5>Use Panel</h5>
                 <Link to={ `${url}/Pay` }> <Button variant="text">Pay</Button> </Link><br />
                 <Link to={ `${url}/MyOrders` }> <Button variant="text">My Orders</Button> </Link><br />
                 <Link to={ `${url}/Review` }> <Button variant="text">Review</Button> </Link>
@@ -145,18 +143,18 @@ function Dashboard(props) {
                 <PrivateRoute exact path={ path }>
                     <DashboardHome></DashboardHome>
                 </PrivateRoute>
-                <PrivateRoute path={ `${path}/ManageAllOrders` }>
+                <AdminRoute path={ `${path}/ManageAllOrders` }>
                     <ManageAllOrders></ManageAllOrders>
-                </PrivateRoute>
-                <PrivateRoute path={ `${path}/AddAProduct` }>
+                </AdminRoute>
+                <AdminRoute path={ `${path}/AddAProduct` }>
                     <AddAProduct></AddAProduct>
-                </PrivateRoute>
-                <PrivateRoute path={ `${path}/makeadmin` }>
+                </AdminRoute>
+                <AdminRoute path={ `${path}/makeadmin` }>
                     <MakeAdmin></MakeAdmin>
-                </PrivateRoute>
-                <PrivateRoute path={ `${path}/ManageProducts` }>
+                </AdminRoute>
+                <AdminRoute path={ `${path}/ManageProducts` }>
                     <ManageProducts></ManageProducts>
-                </PrivateRoute>
+                </AdminRoute>
                 <PrivateRoute path={ `${path}/pay` }>
                     <Pay></Pay>
                 </PrivateRoute>

@@ -14,6 +14,29 @@ const MyOrders = () => {
             .then(res => res.json())
             .then(data => setOrders(data))
     }, []);
+    const handleDelete = id => {
+        const deleteMassege = window.confirm("Delete the item?");
+
+        if (deleteMassege) {
+            const url = `http://localhost:5000/orders/${id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.deletedCount) {
+                        const remaining = orders.filter(order => order._id !== id);
+                        setOrders(remaining);
+
+                    }
+
+                })
+        }
+
+    }
+
+    // -------------Delete Confirmation 
     // const detail = orders.detail;
     console.log(orders);
     return (
@@ -35,7 +58,7 @@ const MyOrders = () => {
                                         </div>
                                         <div className="card-footer">
                                             <small className="text-muted">
-                                                <button className="btn-danger">Delete</button>
+                                                <button onClick={ () => handleDelete(order._id) } className="btn-danger">Delete</button>
                                             </small>
                                         </div>
                                     </div>

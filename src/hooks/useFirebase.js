@@ -7,13 +7,14 @@ initializeAuthentication();
 const useFirebase = () => {
     const [users, setUsers] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [admin, setAdmin] = useState(false);
 
     const auth = getAuth();
 
     const signInUsingGoogle = () => {
         setIsLoading(true);
         const googleProvider = new GoogleAuthProvider();
-        return signInWithPopup(auth, googleProvider)
+        return signInWithPopup(auth, googleProvider);
 
     }
     // observe user state change
@@ -28,19 +29,38 @@ const useFirebase = () => {
             setIsLoading(false);
         });
         return () => unsubscribed;
-    }, [auth])
+    }, [auth]);
+    // setAdmin for Make Admin 
+    useEffect(() => {
+        fetch(`http://localhost:5000/users/${users.email}`)
+            .then(res => res.json())
+            .then(data => setAdmin(data.admin));
+    }, [users.email])
     const logOut = () => {
         setIsLoading(true);
         signOut(auth)
             .then(() => { })
-            .finally(() => setIsLoading(false));
+        // .finally(() => setIsLoading(false));
+    }
+    const saveUser = (email, displayName, method) => {
+        const user = { email, displayName };
+        fetch('http://localhost:5000/users', {
+            method: method,
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then();
     }
     return {
         users,
+        admin,
         isLoading,
         signInUsingGoogle,
         logOut,
-        createUserWithEmailAndPassword
+        createUserWithEmailAndPassword,
+        saveUser
     }
 }
 
