@@ -44,13 +44,7 @@ const Header = () => {
                                                         <Link className="nav-link active" aria-current="page" to="/Dashboard">Dashboard</Link> :
                                                         ''
                                                     }
-                                                </li>
-                                                <li className="nav-item">
-                                                    { users?.email ?
-                                                        <Link className="nav-link active" aria-current="page" to="/MyBooking">MyBooking</Link> :
-                                                        ''
-                                                    }
-                                                </li>
+                                                </li> 
                                                 <li className="nav-item">
                                                     { users?.email ?
                                                         <button onClick={ logOut } className="btn btn-light">LogOut</button> :

@@ -13,9 +13,7 @@ import Login from './components/Auth/Login/Login';
 import AuthProvider from './contexts/AuthProvider';
 import PrivateRoute from './components/Auth/PrivateRoute/PrivateRoute';
 import Registration from './components/Auth/Registration/Registration';
-import MyOrders from './components/MyOrders/MyOrders/MyOrders';
 import Dashboard from './components/Dashboard/Dashboard/Dashboard';
-import ManageAllOrders from './components/Dashboard/Admin/ManageAllOrders/ManageAllOrders/ManageAllOrders';
 
 function App() {
   return (
@@ -55,10 +53,6 @@ function App() {
               <Dashboard></Dashboard>
             </PrivateRoute>
             <PrivateRoute path="/MyOrders">
-              <MyOrders></MyOrders>
-            </PrivateRoute>
-            <PrivateRoute path="/ManageAllOrders">
-              <ManageAllOrders></ManageAllOrders>
             </PrivateRoute>
             <Route path="*">
               <PageNotFound></PageNotFound>

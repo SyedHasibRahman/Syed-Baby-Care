@@ -16,12 +16,30 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import useAuth from '../../../hooks/useAuth';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+} from "react-router-dom";
+import MakeAdmin from '../Admin/MakeAdmin/MakeAdmin';
+import AddAProduct from '../Admin/AddAProduct/AddAProduct';
+import ManageProducts from '../Admin/ManageProducts/ManageProducts';
+import DashboardHome from '../DashboardHome/DashboardHome';
+import ManageAllOrders from '../Admin/ManageAllOrders/ManageAllOrders/ManageAllOrders';
+import PrivateRoute from '../../Auth/PrivateRoute/PrivateRoute';
+import Pay from '../Users/Pay/Pay';
+import Review from '../Users/Review/Review';
+import MyOrders from '../Users/MyOrders/MyOrders/MyOrders';
 
-const drawerWidth = 150;
+const drawerWidth = 200;
 
 function Dashboard(props) {
-    const { users } = useAuth();
+    let { path, url } = useRouteMatch();
+    const { users, logOut } = useAuth();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -31,19 +49,38 @@ function Dashboard(props) {
 
     const drawer = (
         <div>
-            <Toolbar />
+            <Toolbar >
+            </Toolbar >
             <Divider />
-            <List>
-                { ['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={ text }>
-                        <ListItemIcon>
-                            { index % 2 === 0 ? <InboxIcon /> : <MailIcon /> }
-                        </ListItemIcon>
-                        <ListItemText primary={ text } />
-                    </ListItem>
-                )) }
-            </List>
-        </div>
+            <Box>
+                {/* For Admin */ }
+                <Link to="/"><Button variant="text">Back To Home</Button> </Link>
+                <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link>
+                <Link to={ `${url}/ManageAllOrders` }> <Button variant="text">Manage All Orders</Button> </Link>
+                <Link to={ `${url}/AddAProduct` }> <Button variant="text">Add A Product</Button> </Link>
+                <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
+                <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
+            </Box>
+            <br />
+            <Box>
+                {/* For User */ }
+                <Link to="/"><Button variant="text">Back To Home</Button> </Link><br />
+                <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link><br />
+                <Link to={ `${url}/Pay` }> <Button variant="text">Pay</Button> </Link><br />
+                <Link to={ `${url}/MyOrders` }> <Button variant="text">My Orders</Button> </Link><br />
+                <Link to={ `${url}/Review` }> <Button variant="text">Review</Button> </Link>
+            </Box>
+            <Link>
+                { users?.email ?
+                    <button onClick={ logOut } className="btn btn-light">LogOut </button> :
+                    <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
+                }
+                <span className="text-danger">
+                    <br />
+                    <small>{ users?.displayName }</small>
+                </span>
+            </Link>
+        </div >
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -104,20 +141,32 @@ function Dashboard(props) {
                     { drawer }
                 </Drawer>
             </Box>
-            <Box
-                component="main"
-                sx={ { flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } } }
-            >
-                <Toolbar />
-                <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
-                    <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
-                        asa
-                    </Grid>
-                    <Grid item xs={ 12 } sm={ 12 } md={ 6 } >
-                        asa
-                    </Grid>
-                </Grid>
-            </Box>
+            <Switch>
+                <PrivateRoute exact path={ path }>
+                    <DashboardHome></DashboardHome>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/ManageAllOrders` }>
+                    <ManageAllOrders></ManageAllOrders>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/AddAProduct` }>
+                    <AddAProduct></AddAProduct>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/makeadmin` }>
+                    <MakeAdmin></MakeAdmin>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/ManageProducts` }>
+                    <ManageProducts></ManageProducts>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/pay` }>
+                    <Pay></Pay>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/MyOrders` }>
+                    <MyOrders></MyOrders>
+                </PrivateRoute>
+                <PrivateRoute path={ `${path}/Review` }>
+                    <Review></Review>
+                </PrivateRoute>
+            </Switch>
         </Box>
     );
 }

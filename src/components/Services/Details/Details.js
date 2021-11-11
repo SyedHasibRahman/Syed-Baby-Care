@@ -18,7 +18,7 @@ const Details = () => {
 
     const location = useLocation();
     const history = useHistory();
-    const redirect_uri = location.state?.from || '/MyBooking';
+    const redirect_uri = location.state?.from || '/Dashboard/MyOrders';
     console.log(services);
     const { register, handleSubmit } = useForm();
     const onSubmit = data => {
