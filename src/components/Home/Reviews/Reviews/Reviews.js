@@ -8,7 +8,7 @@ const Reviews = () => {
         fetch('http://localhost:5000/reviews')
             .then(res => res.json())
             .then(data => setRatings(data))
-    }, [])
+    }, []);
     return (
         <div className="py-5">
             <div className="container">
@@ -17,7 +17,7 @@ const Reviews = () => {
                         {
                             ratings.map(rating =>
                                 <Review
-                                    rating={ rating.id }
+                                    rating={ rating.info }
                                     ratings={ rating }
                                 ></Review>)
                         }

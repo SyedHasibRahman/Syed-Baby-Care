@@ -7,27 +7,28 @@ const MyOrders = () => {
     const [services] = useServices();
     const { users } = useAuth()
     const [orders, setOrders] = useState([]);
+    const [status, setStatus] = useState(false);
     console.log(services);
-    console.log(orders);
     useEffect(() => {
         fetch(`http://localhost:5000/myorders?email=${users.email}`)
             .then(res => res.json())
             .then(data => setOrders(data))
-    }, []);
+    }, [users.email]);
     const handleDelete = id => {
+        console.log(id);
         const deleteMassege = window.confirm("Delete the item?");
 
         if (deleteMassege) {
-            const url = `http://localhost:5000/orders/${id}`;
+            const url = `http://localhost:5000/myorder/${id}`;
             fetch(url, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
                     if (data.deletedCount) {
                         const remaining = orders.filter(order => order._id !== id);
                         setOrders(remaining);
+
 
                     }
 
@@ -55,8 +56,12 @@ const MyOrders = () => {
                                             <h5 className="card-title">{ order.name }</h5>
                                             <p className="card-title">{ order._id }</p>
                                             <p className="card-text"> { order.discription }</p>
+                                            <p >
+
+                                            </p>
                                         </div>
                                         <div className="card-footer">
+
                                             <small className="text-muted">
                                                 <button onClick={ () => handleDelete(order._id) } className="btn-danger">Delete</button>
                                             </small>

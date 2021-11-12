@@ -49,7 +49,7 @@ function Dashboard(props) {
                 <Link to="/"><Button variant="text">Back To Home</Button> </Link>
                 <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link>
             </Box>
-            { admin &&
+            { admin ?
                 <Box>
                     {/* For Admin */ }
 
@@ -59,6 +59,8 @@ function Dashboard(props) {
                     <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
                     <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
                 </Box>
+                :
+                <p>Need fix Dashboard line: 63</p>
             }
             <br />
             <Box>

@@ -32,10 +32,10 @@ const useFirebase = () => {
     }, [auth]);
     // setAdmin for Make Admin 
     useEffect(() => {
-        fetch(`http://localhost:5000/users/${users.email}`)
+        fetch(`http://localhost:5000/users/${users?.email}`)
             .then(res => res.json())
             .then(data => setAdmin(data.admin));
-    }, [users.email])
+    }, [users?.email])
     const logOut = () => {
         setIsLoading(true);
         signOut(auth)

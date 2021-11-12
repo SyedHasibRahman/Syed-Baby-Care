@@ -10,6 +10,7 @@ const Blogs = () => {
             .then(res => res.json())
             .then(data => setBlog(data))
     }, []);
+    console.log(blogs);
     return (
         <div>
             <Header />
@@ -19,7 +20,7 @@ const Blogs = () => {
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
                     {
                         blogs.map(blog => <Blog
-                            key={ blog.id }
+                            key={ blog._id }
                             blog={ blog }
                         ></Blog>)
                     }

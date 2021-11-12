@@ -1,43 +1,45 @@
+import { Button, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import useServices from '../../../../../hooks/useServices';
 // import useServices from '../../../hooks/useServices';
 import './ManageAllOrders';
 
 const ManageAllOrders = () => {
-    const [services] = useServices();
     const [orders, setOrders] = useState([]);
-    console.log(services);
-    console.log(orders);
+
+    const [status, setStatus] = useState('');
     useEffect(() => {
         fetch('http://localhost:5000/orders')
             .then(res => res.json())
             .then(data => setOrders(data))
     }, []);
-    // const detail = orders.detail;
-    const handleDelete = _id => {
-        const deleteMassege = window.confirm("Delete the item?");
-
-        if (deleteMassege) {
-            const url = `http://localhost:5000/orders/${_id}`;
-            fetch(url, {
-                method: 'DELETE'
+    // Status 
+    const handleOnBlur = e => {
+        setStatus(e.target.value);
+    }
+    const handleStatus = (e) => {
+        const id = { status }
+        fetch('http://localhost:5000/orders/status', {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
             })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    if (data.deletedCount) {
-                        const remaining = orders.filter(order => order._id !== _id);
-                        setOrders(remaining);
+        e.preventDefault()
+    }
+    console.log(status);
+    // Delete a products
+    const handleDelete = id => {
 
-                    }
-
-                })
-        }
 
     }
 
-    // -------------Delete Confirmation 
-    console.log(orders);
+    // -------------Delete Confirmation  
     return (
         <div className="mt-5 MyOrders container">
             <div className="container">
@@ -54,8 +56,13 @@ const ManageAllOrders = () => {
                                             <h5 className="card-title">{ order.name }</h5>
                                             <p className="card-title">{ order._id }</p>
                                             <p className="card-text"> { order.discription }</p>
+
+
+
+
                                         </div>
                                         <div className="card-footer">
+
                                             <small className="text-muted">
                                                 <button onClick={ () => handleDelete(order._id) } className="btn-danger">Delete</button>
                                             </small>

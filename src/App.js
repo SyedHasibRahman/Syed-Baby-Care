@@ -2,8 +2,6 @@ import './App.css';
 import Home from './components/Home/Home/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Services from './components/Services/Services/Services';
-import Header from './components/Shared/Header/Header';
-import Footer from './components/Shared/Footer/Footer';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import Blogs from './components/Blogs/Blogs/Blogs';
 import AboutUs from './components/AboutUs/AboutUs';
@@ -45,7 +43,7 @@ function App() {
             <Route path="/Contactus">
               <Contactus></Contactus>
             </Route>
-            <PrivateRoute path="/Details/:id">
+            <PrivateRoute path="/Details/:_id">
               <Details></Details>
             </PrivateRoute>
             <PrivateRoute path="/Dashboard">

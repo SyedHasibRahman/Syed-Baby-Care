@@ -17,7 +17,7 @@ const ServicesForHome = () => {
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {
                         services.map(service => <div
-                            key={ service.id }
+                            key={ service._id }
                         >
                             <div className="col service-card mb-5 ">
                                 <div className="card">
@@ -34,7 +34,7 @@ const ServicesForHome = () => {
                                         >
                                         </Rating >
                                         <h4>${ service.price }</h4>
-                                        <Link className="btn btn-info " to={ `/Details/${service.id}` }>Buy Now</Link>
+                                        <Link className="btn btn-info " to={ `/Details/${service._id}` }>Buy Now</Link>
                                     </div>
 
                                 </div>

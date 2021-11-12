@@ -1,9 +1,11 @@
 import React from 'react';
+import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
 import './Service.css'
 
 const Service = (props) => {
-    const { id, name, discription, img, price } = props.service;
+    const { _id, name, discription, img, price, star } = props.service;
+    // console.log(props.service);
     return (
         <div>
             <div className="col service-card mb-5">
@@ -12,8 +14,16 @@ const Service = (props) => {
                     <div className="card-body">
                         <h5 className="card-title">{ name }</h5>
                         <p className="card-text">{ discription }</p>
+                        <Rating
+                            initialRating={ star }
+                            readonly
+                            emptySymbol="fa fa-star-o fa-2x icon-color"
+                            fullSymbol="fa fa-star fa-2x icon-color"
+
+                        >
+                        </Rating >
                         <h4>${ price }</h4>
-                        <Link className="btn btn-info " to={ `/Details/${id}` }>Buy Now</Link>
+                        <Link className="btn btn-info " to={ `/Details/${_id}` }>Buy Now</Link>
                     </div>
 
                 </div>
