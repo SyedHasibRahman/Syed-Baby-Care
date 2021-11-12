@@ -1,106 +1,89 @@
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
+import Grid from '@mui/material/Grid'
+import { Alert, Button, Container, LinearProgress, Stack, TextField, Typography } from '@mui/material';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
-import './Login.css';
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
-
-const Login = () => {
-    const auth = getAuth();
-    const { signInUsingGoogle, saveUser } = useAuth();
-    const [error, setError] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Login = (e) => {
+    const [loginData, setLoginData] = useState({});
+    const { user, loginUser, isLoading, authError, signInWithGoogle } = useAuth();
 
     const location = useLocation();
     const history = useHistory();
-    const redirect_uri = location.state?.from || '/home';
-    const handleGoogleLogin = () => {
-        signInUsingGoogle()
-            .then(result => {
-                const user = result.user;
-                saveUser(user.email, user.displayName, 'PUT')
-                history.push(redirect_uri);
-            });
-        // .finally(() => setIsLoading(false));
-    }
 
-    const handleEmailchange = e => {
-        setEmail(e.target.value);
-        // console.log(e.target.value);
+    const handleOnChange = (e) => {
+        const field = e.target.name;
+        const value = e.target.value;
+        // console.log(field, value);
+        const newLoginData = { ...loginData };
+        newLoginData[field] = value;
+        setLoginData(newLoginData);
+        console.log(loginData);
     }
-
-    const handlePasswordChange = e => {
-        setPassword(e.target.value);
-        // console.log(e.target.value);
-    }
-
-    const signInByEmailPassword = (e) => {
+    const handleLoginSubmit = (e) => {
+        loginUser(loginData.email, loginData.password, location, history);
+        alert('Hello')
         e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-                // Signed in 
-                const user = result.user;
-                history.push(redirect_uri);
-                alert("Login Successful Welcome!", user.displayName)
-                // ... 
-            })
-            .catch((error) => {
-                setError(error.message);
-            });
     }
-    const handleResetPassword = () => {
-        sendPasswordResetEmail(auth, email)
-            .then((result) => {
-                // Password reset email sent!
-                // ..
-            })
-            .catch((error) => {
-                setError(error.message)
-            });
+    const handleGoogleSignIn = () => {
+        signInWithGoogle(location, history)
     }
-
     return (
-        <div>
-            {/* login form  */ }
-            <main className="container my-5">
-                <div className="row">
-                    <section className="col-md-6 my-5 offset-md-3">
+        <Container>
+            <Grid container spacing={ 2 } sx={ { justifyContent: 'center', alignItems: 'center' } }>
+                <Grid item xs={ 12 } md={ 6 }>
+                    <Typography variant="body1" gutterBottom>
+                        Login
+                    </Typography>
+                    <form onSubmit={ handleLoginSubmit }>
+                        <TextField
+                            sx={ { width: '75%', m: 1 } }
+                            id="standard-basic"
+                            name="email"
+                            onChange={ handleOnChange }
+                            label="Your Email"
+                            variant="standard" />
+                        <TextField
+                            sx={ { width: '75%', m: 1 } }
+                            type="password"
+                            id="standard-basic"
+                            name="password"
+                            onChange={ handleOnChange }
+                            label="Your Password"
+                            variant="standard" />
 
-                        <div className="card shadow p-5">
-                            <form onSubmit={ signInByEmailPassword }>
+                        <Button sx={ { width: '75%', m: 1 } } type="submit" variant="contained">Login</Button>
+                        <NavLink
+                            style={ { textDecoration: 'none' } } to="/Registration">
+                            <Button sx={ { width: '75%', m: 1 } } type="submit" variant="text">New User? Register</Button>
+                        </NavLink>
 
-                                <h3 className="text-center text-uppercase mb-4">Login Please</h3>
-                                <h4 className="text-center text-danger">{ error }</h4>
-                                <hr />
-
-                                <div className="form-group">
-                                    <label>Email</label>
-                                    <input onBlur={ handleEmailchange } type="email" placeholder="Email" className="form-control" required />
-                                </div>
-
-                                <label htmlFor="Password">Password</label>
-                                <div className="input-group mb-3">
-                                    <input onBlur={ handlePasswordChange } type="password" name="password" id="password" className="form-control" placeholder="Enter Password" aria-label="Enter Password" aria-describedby="basic-addon2" required />
-                                    <div className="input-group-append">
-                                    </div>
-                                </div>
-
-                                <input type="submit" value="Login" className="btn btn-block btn-danger rounded-pill mt-3" />
-
-                                <p className="mt-3 text-white">Don't have an Account ? <Link to="/Registration" className="text-white"> Create Here</Link></p>
-
-                            </form>
-                            <button onClick={ handleGoogleLogin } className="btn btn-danger">Google Login</button> <br />
-                            <button onClick={ handleResetPassword } className="btn btn-danger">ResetPassword</button>
-                        </div>
-                    </section>
-                </div>
-            </main>
-            {/* login form  */ }
-
-        </div>
+                        {
+                            isLoading && <Stack sx={ { width: '100%', color: 'grey.500' } } spacing={ 2 }>
+                                <LinearProgress color="secondary" />
+                                <LinearProgress color="success" />
+                                <LinearProgress color="inherit" />
+                            </Stack>
+                        }
+                        {
+                            user.email && <Alert severity="success">
+                                User Created <strong>Successfully!</strong>
+                            </Alert>
+                        }
+                        {
+                            authError && <Alert variant="outlined" severity="error">
+                                { authError }
+                            </Alert>
+                        }
+                    </form>
+                    <p>-------------------------------</p>
+                    <Button onClick={ handleGoogleSignIn } variant="contained">Google Sign In</Button>
+                </Grid>
+                <Grid item xs={ 12 } md={ 6 }>
+                    <img style={ { width: '100%' } } src="https://www.kindpng.com/picc/m/393-3938892_get-in-touch-get-in-touch-png-transparent.png" alt="" />
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 

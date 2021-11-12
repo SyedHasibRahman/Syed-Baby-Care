@@ -31,7 +31,7 @@ const drawerWidth = 200;
 
 function Dashboard(props) {
     let { path, url } = useRouteMatch();
-    const { users, logOut, admin } = useAuth();
+    const { user, logOut, admin } = useAuth();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -58,26 +58,27 @@ function Dashboard(props) {
                     <Link to={ `${url}/AddAProduct` }> <Button variant="text">Add A Product</Button> </Link>
                     <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
                     <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
+
+                    {/* For User */ }
+                    <h5>Use Panel</h5>
+                    <Link to={ `${url}/Pay` }> <Button variant="text">Pay</Button> </Link><br />
+                    <Link to={ `${url}/MyOrders` }> <Button variant="text">My Orders</Button> </Link><br />
+                    <Link to={ `${url}/Review` }> <Button variant="text">Review</Button> </Link>
                 </Box>
+
                 :
-                <p>Need fix Dashboard line: 63</p>
+                <p></p>
             }
             <br />
-            <Box>
-                {/* For User */ }
-                <h5>Use Panel</h5>
-                <Link to={ `${url}/Pay` }> <Button variant="text">Pay</Button> </Link><br />
-                <Link to={ `${url}/MyOrders` }> <Button variant="text">My Orders</Button> </Link><br />
-                <Link to={ `${url}/Review` }> <Button variant="text">Review</Button> </Link>
-            </Box>
+
             <Link>
-                { users?.email ?
+                { user?.email ?
                     <button onClick={ logOut } className="btn btn-light">LogOut </button> :
                     <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
                 }
                 <span className="text-danger">
                     <br />
-                    <small>{ users?.displayName }</small>
+                    <small>{ user?.displayName }</small>
                 </span>
             </Link>
         </div >
@@ -106,7 +107,7 @@ function Dashboard(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Welcome Dear { users?.displayName }!!
+                        Welcome Dear { user?.displayName }!!
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -141,6 +142,7 @@ function Dashboard(props) {
                     { drawer }
                 </Drawer>
             </Box>
+
             <Switch>
                 <PrivateRoute exact path={ path }>
                     <DashboardHome></DashboardHome>

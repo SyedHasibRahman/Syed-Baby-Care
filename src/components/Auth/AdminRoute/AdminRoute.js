@@ -3,14 +3,15 @@ import { Redirect, Route } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 
 const AdminRoute = ({ children, ...rest }) => {
-    const { users, admin, isLoading } = useAuth();
+    const { user, admin, isLoading } = useAuth();
+    console.log(admin);
     if (isLoading) {
         return <img src="https://jthemes.net/themes/html/medservices/files/images/loader.gif" alt="" />
     }
     return (
         <Route
             { ...rest }
-            render={ ({ location }) => users.email && admin ? children : <Redirect
+            render={ ({ location }) => user.email && admin ? children : <Redirect
                 to={ {
                     pathname: "/",
                     state: { from: location }

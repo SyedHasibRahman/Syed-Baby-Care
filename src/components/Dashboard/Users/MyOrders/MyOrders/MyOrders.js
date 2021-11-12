@@ -1,84 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../../../../hooks/useAuth';
-import useServices from '../../../../../hooks/useServices';
-import './MyOrders.css';
 
 const MyOrders = () => {
-    const [services] = useServices();
-    const { users } = useAuth()
-    const [orders, setOrders] = useState([]);
-    const [status, setStatus] = useState(false);
-    console.log(services);
+    const [products, setproduct] = useState([]);
+    const { user } = useAuth()
+    // console.log(services);
+    // console.log(products);
+
+
     useEffect(() => {
-        fetch(`http://localhost:5000/myorders?email=${users.email}`)
+        fetch(`http://localhost:5000/myorders/?email=${user.email}`)
             .then(res => res.json())
-            .then(data => setOrders(data))
-    }, [users.email]);
+            .then(data => setproduct(data))
+    }, [user.email]);
+    // Delete a products
     const handleDelete = id => {
-        console.log(id);
         const deleteMassege = window.confirm("Delete the item?");
+        // if (deleteMassege) {
+        const url = `http://localhost:5000/orders/${id}`;
+        fetch(url, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.deletedCount > 0) {
+                    const remaining = products.filter(product => product._id !== id);
+                    setproduct(remaining);
 
-        if (deleteMassege) {
-            const url = `http://localhost:5000/myorder/${id}`;
-            fetch(url, {
-                method: 'DELETE'
+                }
+
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.deletedCount) {
-                        const remaining = orders.filter(order => order._id !== id);
-                        setOrders(remaining);
-
-
-                    }
-
-                })
-        }
+        // }
 
     }
 
-    // -------------Delete Confirmation 
-    // const detail = orders.detail;
-    console.log(orders);
+    // -------------Delete Confirmation
     return (
-        <div className="mt-5 MyOrders container">
-            <div className="container">
-                <div className="row">
-                    <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 g-4">
-                        {
-                            orders.map(order => <div className="p-2 border border-info"
-                                key={ order._id }
-                            >
-                                <div className="card-group review">
-                                    <div className="card text-center">
-                                        <img src={ order.img } className="card-img-top" alt="Mom/Dad" />
-                                        <div className="card-body">
-                                            <h5 className="card-title">{ order.name }</h5>
-                                            <p className="card-title">{ order._id }</p>
-                                            <p className="card-text"> { order.discription }</p>
-                                            <p >
+        <div>
+            <h2>ManageProducts</h2>
 
-                                            </p>
-                                        </div>
-                                        <div className="card-footer">
+            <div className="mt-5 MyOrders container">
+                <div className="container">
+                    <div className="row">
+                        <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 g-4">
+                            {
+                                products.map(product => <div className="p-2 border border-info"
+                                    key={ product._id }
+                                >
+                                    <div className="card-group review">
+                                        <div className="card text-center">
+                                            <img src={ product.img } className="card-img-top" alt="Mom/Dad" />
+                                            <div className="card-body">
+                                                <h5 className="card-title">{ product.name }</h5>
+                                                <p className="card-title">{ product._id }</p>
+                                                <p className="card-text"> { product.discription }</p>
+                                                <p className="card-title">{ product._id }</p>
+                                                <input type="text" defaultValue={ product.status }></input>
+                                            </div>
+                                            <div className="card-footer">
 
-                                            <small className="text-muted">
-                                                <button onClick={ () => handleDelete(order._id) } className="btn-danger">Delete</button>
-                                            </small>
+                                                <small className="text-muted">
+                                                    <button onClick={ () => handleDelete(product._id) } className="btn-danger">Delete</button>
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </div>)
-                        }
+                                </div>)
+                            }
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="col-md-6">
-            </div>
+                <div className="col-md-6">
+                </div>
 
-        </div >
+            </div >
+        </div>
     );
 };
 

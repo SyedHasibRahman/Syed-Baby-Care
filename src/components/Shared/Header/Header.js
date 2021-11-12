@@ -4,7 +4,7 @@ import useAuth from '../../../hooks/useAuth';
 import './Header.css';
 
 const Header = () => {
-    const { users, logOut } = useAuth();
+    const { user, logOut } = useAuth();
     return (
         <div className="header mb-4 p-3">
             <div className="container">
@@ -32,7 +32,7 @@ const Header = () => {
                                     <Link className="nav-link active" aria-current="page" to="/Contactus">Contact Us</Link>
                                 </li>
                                 <li className="nav-item dropdown">
-                                    { users?.email ?
+                                    { user?.email ?
                                         <div>
                                             <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Dashboard
@@ -40,18 +40,18 @@ const Header = () => {
                                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                                 <li className="nav-item">
-                                                    { users?.email ?
+                                                    { user?.email ?
                                                         <Link className="nav-link active" aria-current="page" to="/Dashboard">Dashboard</Link> :
                                                         ''
                                                     }
-                                                </li> 
+                                                </li>
                                                 <li className="nav-item">
-                                                    { users?.email ?
+                                                    { user?.email ?
                                                         <button onClick={ logOut } className="btn btn-light">LogOut</button> :
                                                         <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
                                                     }
                                                     <span className="text-danger">
-                                                        <small>{ users?.displayName }</small>
+                                                        <small>{ user?.displayName }</small>
                                                     </span>
                                                 </li>
                                             </ul>
@@ -60,7 +60,7 @@ const Header = () => {
                                     }
                                 </li>
                                 <li className="nav-item">
-                                    { users?.email ?
+                                    { user?.email ?
                                         '' :
                                         <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
                                     }

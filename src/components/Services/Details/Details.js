@@ -15,14 +15,19 @@ const Details = () => {
     // const dId = parseFloat(_id)
     const [services] = useServices();
     const [detail, setDetail] = useState({});
-    const { users } = useAuth();
-
+    const { user } = useAuth();
     const location = useLocation();
     const history = useHistory();
     const redirect_uri = location.state?.from || '/Dashboard/MyOrders';
     const { register, handleSubmit } = useForm();
     const onSubmit = data => {
-        axios.post('http://localhost:5000/orders', { ...data, ...detail })
+        data.email = user.email;
+        data.img = detail.img;
+        data.name = detail.name;
+        data.price = detail.price;
+        data.status = "pending"
+        axios.post('http://localhost:5000/orders', data)
+            // axios.post('http://localhost:5000/orders', { ...data, img, name, price, discription })
             .then(res => {
                 console.log(res)
                 if (res.data.insertedId) {
@@ -31,6 +36,7 @@ const Details = () => {
                 }
             })
     };
+    // console.log(detail?.name);
 
     useEffect(() => {
         const foundDetails = services.find(service => service._id === _id)
@@ -68,8 +74,8 @@ const Details = () => {
                         <h2 className="pt-4">Shipping & Billing</h2>
                         {/* <input type="date" /> */ }
                         <form onSubmit={ handleSubmit(onSubmit) }>
-                            <input { ...register("userName", { required: true, maxLength: 200 }) } value={ users?.displayName || '' } />
-                            <input { ...register("email") } value={ users?.email || '' } />
+                            <input { ...register("userName", { required: true, maxLength: 200 }) } value={ user?.displayName || '' } />
+                            <input { ...register("email") } value={ user?.email || '' } />
                             <input { ...register("address") } placeholder="Address" />
                             <input { ...register("phone") } placeholder="Phone Number" />
                             <input type="submit" value="Confirm Order" />

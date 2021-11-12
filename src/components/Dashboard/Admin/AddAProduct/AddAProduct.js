@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useLocation } from 'react-router';
-import useAuth from '../../../../hooks/useAuth';
+import { useHistory, useLocation } from 'react-router'; 
 import './AddProducts.css';
 
 const AddAProduct = () => {

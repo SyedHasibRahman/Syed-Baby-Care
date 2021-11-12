@@ -1,43 +1,39 @@
-import { Button, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import useServices from '../../../../../hooks/useServices';
 // import useServices from '../../../hooks/useServices';
 import './ManageAllOrders';
 
 const ManageAllOrders = () => {
     const [orders, setOrders] = useState([]);
-
     const [status, setStatus] = useState('');
+
     useEffect(() => {
         fetch('http://localhost:5000/orders')
             .then(res => res.json())
             .then(data => setOrders(data))
     }, []);
-    // Status 
-    const handleOnBlur = e => {
-        setStatus(e.target.value);
-    }
-    const handleStatus = (e) => {
-        const id = { status }
-        fetch('http://localhost:5000/orders/status', {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(id)
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-            })
-        e.preventDefault()
-    }
-    console.log(status);
+    // Status  
+
     // Delete a products
+    const handleStatus = e => {
+        setStatus(e.target.value);
+
+    }
+    const handleUpdate = id => {
+        fetch(`http://localhost:5000/updateStatus/${id}`, {
+            method: "PUT",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({ status })
+        })
+    }
+    // console.log(status);
     const handleDelete = id => {
 
 
     }
+
+
 
     // -------------Delete Confirmation  
     return (
@@ -56,10 +52,17 @@ const ManageAllOrders = () => {
                                             <h5 className="card-title">{ order.name }</h5>
                                             <p className="card-title">{ order._id }</p>
                                             <p className="card-text"> { order.discription }</p>
-
-
-
-
+                                            <input type="text"
+                                                defaultValue={ order.status }
+                                                onBlur={ handleStatus }
+                                            ></input>
+                                            {/* <form>
+                                                <select>
+                                                    <option defaultValue={ order.status }>Penging</option>
+                                                    <option defaultValue={ order.status }>Shiped</option>
+                                                </select>
+                                            </form> */}
+                                            <button onClick={ () => handleUpdate(order._id) } className="btn-light">Update</button>
                                         </div>
                                         <div className="card-footer">
 

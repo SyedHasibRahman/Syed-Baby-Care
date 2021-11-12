@@ -1,120 +1,104 @@
-import React from 'react';
-import { useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import Grid from '@mui/material/Grid'
+import { Alert, Button, Container, TextField, Typography } from '@mui/material';
+import { NavLink, useHistory } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
+import Stack from '@mui/material/Stack';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Registration = () => {
-    const auth = getAuth();
-    const { signInUsingGoogle, saveUser, users } = useAuth();
-    const [email, setEmail] = useState('');
-    const [password, setpassword] = useState('');
-    const [name, setName] = useState('');
-    const [error, setError] = useState('');
-    // const [setIsLoading] = useState(true);
-    // console.log(users.email);
-    const location = useLocation();
-    const history = useHistory();
-    const redirect_uri = location.state?.from || '/';
-    const handleGoogleLogin = () => {
-        signInUsingGoogle()
-            .then(result => {
-                const user = result.user;
-                saveUser(user.email, user.displayName, 'PUT')
-                history.push(redirect_uri);
-            })
-        // .finally(() => setIsLoading(false));
-    }
-    const handleNameChange = e => {
-        setName(e.target.value);
-    }
-    const handleEmailchange = e => {
-        setEmail(e.target.value);
-    }
+    const [loginData, setLoginData] = useState({});
+    const history = useHistory()
+    const { user, registerUser, isLoading, authError } = useAuth();
 
-    const handlePasswordChange = e => {
-        setpassword(e.target.value);
+    const handleOnBlur = (e) => {
+        const field = e.target.name;
+        const value = e.target.value;
+        // console.log(field, value);
+        const newLoginData = { ...loginData };
+        newLoginData[field] = value;
+        setLoginData(newLoginData);
+        console.log(loginData);
     }
-    // 
-    const handleRegistration = (e) => {
-        const paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+    const handleLoginSubmit = (e) => {
+        if (loginData.password !== loginData.password2) {
+            alert('Not match')
+        }
+        registerUser(loginData.email, loginData.password, loginData.name, history)
         e.preventDefault();
-        if (password.length < 7) {
-            setError('Password should be at least 7 characters');
-            return;
-        }
-        if (!paswd.test(password)) {
-            setError('should contain at least 1 lower and 1 upper case 1 Special Charector');
-            return;
-        }
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-                saveUser(email, name, 'POST');
-                history.push(redirect_uri);
-                window.location.reload();
-                setError('');
-                setUserName();
-                verifyEmail();
-            })
-            .catch(error => {
-                setError(error.message);
-            })
-    }
-    const setUserName = () => {
-        updateProfile(auth.currentUser,
-            { displayName: name })
-            .then(result => { })
-    }
-    const verifyEmail = () => {
-        sendEmailVerification(auth.currentUser)
-            .then(result => {
-            })
     }
     return (
-        <div>
-            {/* login form  */ }
-            <main className="container my-5">
-                <div className="row">
-                    <section className="col-md-6 my-5 offset-md-3">
-                        <div className="card shadow p-5">
-                            <form onSubmit={ handleRegistration }>
+        <Container>
+            <Grid container spacing={ 2 } sx={ { justifyContent: 'center', alignItems: 'center' } }>
+                <Grid item xs={ 12 } md={ 6 }>
+                    <Typography variant="body1" gutterBottom>
+                        Register
+                    </Typography>
+                    { !isLoading && <form onSubmit={ handleLoginSubmit }>
+                        <TextField
+                            sx={ { width: '75%', m: 1 } }
+                            id="standard-basic"
+                            type="name"
+                            name="name"
+                            onBlur={ handleOnBlur }
+                            label="Your Name"
+                            variant="standard" />
+                        <TextField
+                            sx={ { width: '75%', m: 1 } }
+                            id="standard-basic"
+                            type="email"
+                            name="email"
+                            onBlur={ handleOnBlur }
+                            label="Your Email"
+                            variant="standard" />
+                        <TextField
+                            sx={ { width: '75%', m: 1 } }
+                            type="password"
+                            id="standard-basic"
+                            name="password2"
+                            onBlur={ handleOnBlur }
+                            label="Your Password"
+                            variant="standard" />
+                        <TextField
+                            sx={ { width: '75%', m: 1 } }
+                            type="password"
+                            id="standard-basic"
+                            name="password"
+                            onBlur={ handleOnBlur }
+                            label="Re-Type Your Password"
+                            variant="standard" />
 
-                                <h3 className="text-center text-uppercase mb-4">Registration Please</h3>
+                        <Button sx={ { width: '75%', m: 1 } } type="submit" variant="contained">RegisterUser</Button>
+                        <NavLink
+                            style={ { textDecoration: 'none' } } to="Login">
+                            <Button sx={ { width: '75%', m: 1 } } type="submit" variant="text">Already Registered? Please Login</Button>
+                        </NavLink>
 
-                                <h4 className="text-center text-danger">{ error }</h4>
-                                <hr />
+                    </form> }
+                    {
+                        isLoading && <Stack sx={ { width: '100%', color: 'grey.500' } } spacing={ 2 }>
+                            <LinearProgress color="secondary" />
+                            <LinearProgress color="success" />
+                            <LinearProgress color="inherit" />
+                        </Stack>
+                    }
+                    {
+                        user.email && <Alert severity="success">
+                            Suer Created <strong>Successfully!</strong>
+                        </Alert>
+                    }
+                    {
+                        authError && <Alert variant="outlined" severity="error">
+                            { authError }
+                        </Alert>
+                    }
 
-                                <div className="form-group">
-                                    <label>Full Name</label>
-                                    <input onBlur={ handleNameChange } type="text" placeholder="Full Name" className="form-control" />
-                                </div>
-                                <div className="form-group">
-                                    <label>Email</label>
-                                    <input onBlur={ handleEmailchange } type="email" placeholder="Email" className="form-control" required />
-                                </div>
-
-                                <label htmlFor="Password">Password</label>
-                                <div className="input-group mb-3">
-
-                                    <input onBlur={ handlePasswordChange } type="password" name="password" className="form-control" placeholder="Enter Password" required />
-                                    <div className="input-group-append">
-                                    </div>
-                                </div>
-
-                                <input type="submit" value="Registration" className="btn btn-block btn-danger rounded-pill mt-3" />
-
-                                <p className="mt-3 text-white">Already have an Account ? <Link to="/login" className="text-white"> Login Here</Link></p>
-
-                            </form>
-                            <button onClick={ handleGoogleLogin } className="btn btn-danger">Google Login</button>
-                        </div>
-                    </section>
-                </div>
-            </main>
-            {/* login form  */ }
-
-        </div>
+                </Grid>
+                <Grid item xs={ 12 } md={ 6 }>
+                    <img style={ { width: '100%' } } src="https://www.kindpng.com/picc/m/393-3938892_get-in-touch-get-in-touch-png-transparent.png" alt="" />
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 
