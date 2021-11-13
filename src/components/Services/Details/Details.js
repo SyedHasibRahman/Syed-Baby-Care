@@ -25,6 +25,7 @@ const Details = () => {
         data.img = detail.img;
         data.name = detail.name;
         data.price = detail.price;
+        data.discription = detail.discription;
         data.status = "pending"
         axios.post('https://still-bastion-57482.herokuapp.com/orders', data)
             // axios.post('https://still-bastion-57482.herokuapp.com/orders', { ...data, img, name, price, discription })

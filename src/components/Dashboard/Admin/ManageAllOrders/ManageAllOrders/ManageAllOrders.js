@@ -5,7 +5,6 @@ import './ManageAllOrders';
 const ManageAllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [status, setStatus] = useState('');
-    const [products, setproduct] = useState([]);
 
     useEffect(() => {
         fetch('https://still-bastion-57482.herokuapp.com/orders')
@@ -31,9 +30,8 @@ const ManageAllOrders = () => {
                 .then(data => {
                     console.log(data);
                     if (data.deletedCount > 0) {
-                        const remaining = products.filter(product => product._id !== id);
-                        setproduct(remaining);
-
+                        const remaining = orders.filter(product => product._id !== id);
+                        setOrders(remaining);
                     }
 
                 })
@@ -68,7 +66,8 @@ const ManageAllOrders = () => {
                                         <img src={ order.img } className="card-img-top" alt="Mom/Dad" />
                                         <div className="card-body">
                                             <h5 className="card-title">{ order.name }</h5>
-                                            <p className="card-title">{ order._id }</p>
+                                            <p className="card-title"> Order ID: { order._id }</p>
+                                            <p className="card-title text-success">Order By: { order.userName }</p>
                                             <p className="card-text"> { order.discription }</p>
                                             <input type="text"
                                                 defaultValue={ order.status }

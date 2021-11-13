@@ -54,8 +54,7 @@ const MyOrders = () => {
                                             <div className="card-body">
                                                 <h5 className="card-title">{ product.name }</h5>
                                                 <p className="card-title">{ product._id }</p>
-                                                <p className="card-text"> { product.discription }</p>
-                                                <p className="card-title">{ product._id }</p>
+                                                {/* <p className="card-text"> { product.discription }</p> */ }
                                                 <button className="btn-success">{ product.status }</button>
                                             </div>
                                             <div className="card-footer">

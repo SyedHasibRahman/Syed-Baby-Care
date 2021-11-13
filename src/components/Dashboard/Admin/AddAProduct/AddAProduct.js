@@ -9,7 +9,7 @@ const AddAProduct = () => {
 
     const location = useLocation();
     const history = useHistory();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
     const redirect_uri = location.state?.from || '/products';
     const onSubmit = data => {
         axios.post('https://still-bastion-57482.herokuapp.com/products', data)
@@ -17,7 +17,8 @@ const AddAProduct = () => {
                 console.log(res)
                 if (res.data.insertedId) {
                     alert('Order Successful!');
-                    history.push(redirect_uri);
+                    // history.push(redirect_uri);
+                    reset();
                 }
             })
     };

@@ -13,7 +13,6 @@ const ManageProducts = () => {
     }, []);
     // Delete a products
     const handleDelete = id => {
-        const dId = parseFloat(id)
         const deleteMassege = window.confirm("Delete the item?");
         if (deleteMassege) {
             const url = `https://still-bastion-57482.herokuapp.com/products/${id}`;
@@ -24,7 +23,7 @@ const ManageProducts = () => {
                 .then(data => {
                     console.log(data);
                     if (data.deletedCount > 0) {
-                        const remaining = products.filter(product => product._id !== dId);
+                        const remaining = products.filter(product => product._id !== id);
                         setproduct(remaining);
 
                     }
@@ -39,7 +38,7 @@ const ManageProducts = () => {
         <div>
 
             <div className="mt-5 pt-5 MyOrders container">
-                <h2 className="">Please  add a Products</h2>
+                <h2 className="">Mange Products</h2>
                 <hr />
                 <hr />
                 <div className="container">
