@@ -16,22 +16,22 @@ const MyOrders = () => {
     // Delete a products
     const handleDelete = id => {
         const deleteMassege = window.confirm("Delete the item?");
-        // if (deleteMassege) {
-        const url = `https://still-bastion-57482.herokuapp.com/orders/${id}`;
-        fetch(url, {
-            method: 'DELETE'
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.deletedCount > 0) {
-                    const remaining = products.filter(product => product._id !== id);
-                    setproduct(remaining);
-
-                }
-
+        if (deleteMassege) {
+            const url = `https://still-bastion-57482.herokuapp.com/orders/${id}`;
+            fetch(url, {
+                method: 'DELETE'
             })
-        // }
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.deletedCount > 0) {
+                        const remaining = products.filter(product => product._id !== id);
+                        setproduct(remaining);
+
+                    }
+
+                })
+        }
 
     }
 
@@ -56,7 +56,7 @@ const MyOrders = () => {
                                                 <p className="card-title">{ product._id }</p>
                                                 <p className="card-text"> { product.discription }</p>
                                                 <p className="card-title">{ product._id }</p>
-                                                <button className="btn-success">{product.status}</button>
+                                                <button className="btn-success">{ product.status }</button>
                                             </div>
                                             <div className="card-footer">
 
