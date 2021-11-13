@@ -2,14 +2,18 @@ import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useLocation } from 'react-router';
+import useAuth from '../../../../hooks/useAuth';
 
 const Review = () => {
     const location = useLocation();
+    const { user } = useAuth();
     const history = useHistory();
     const { register, handleSubmit } = useForm();
     const redirect_uri = location.state?.from || '/products';
     const onSubmit = data => {
-        axios.post('http://localhost:5000/reviews', data)
+        data.userEmail = user?.email;
+        data.userName = user?.displayName;
+        axios.post('https://still-bastion-57482.herokuapp.com/reviews', data)
             .then(res => {
                 console.log(res)
                 if (res.data.insertedId) {

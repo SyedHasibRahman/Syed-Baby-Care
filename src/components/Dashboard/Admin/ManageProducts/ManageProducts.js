@@ -7,7 +7,7 @@ const ManageProducts = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/products')
+        fetch('https://still-bastion-57482.herokuapp.com/products')
             .then(res => res.json())
             .then(data => setproduct(data))
     }, []);
@@ -16,7 +16,7 @@ const ManageProducts = () => {
         const dId = parseFloat(id)
         const deleteMassege = window.confirm("Delete the item?");
         if (deleteMassege) {
-            const url = `http://localhost:5000/products/${id}`;
+            const url = `https://still-bastion-57482.herokuapp.com/products/${id}`;
             fetch(url, {
                 method: 'DELETE'
             })
@@ -37,9 +37,11 @@ const ManageProducts = () => {
     // -------------Delete Confirmation
     return (
         <div>
-            <h2>ManageProducts</h2>
 
-            <div className="mt-5 MyOrders container">
+            <div className="mt-5 pt-5 MyOrders container">
+                <h2 className="">Please  add a Products</h2>
+                <hr />
+                <hr />
                 <div className="container">
                     <div className="row">
                         <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 g-4">

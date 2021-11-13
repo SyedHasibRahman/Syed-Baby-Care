@@ -4,7 +4,7 @@ import useAuth from '../../../hooks/useAuth';
 
 const AdminRoute = ({ children, ...rest }) => {
     const { user, admin, isLoading } = useAuth();
-    console.log(admin);
+    // console.log(admin);
     if (isLoading) {
         return <img src="https://jthemes.net/themes/html/medservices/files/images/loader.gif" alt="" />
     }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './Dashboard.css';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,7 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import useAuth from '../../../hooks/useAuth';
-import { Button } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import {
     Switch,
     Link,
@@ -44,30 +45,40 @@ function Dashboard(props) {
             <Toolbar >
             </Toolbar >
             <Divider />
-            <Box>
-                <h5>Comon Path</h5>
-                <Link to="/"><Button variant="text">Back To Home</Button> </Link>
-                <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link>
-            </Box>
-            { admin ?
+            { admin && user?.email ?
                 <Box>
                     {/* For Admin */ }
+                    <ButtonGroup
+                        className="btn-group"
+                        orientation="vertical"
+                        aria-label="vertical outlined button group"
+                    >
+                        <h5>Admin Panel</h5>
 
-                    <h5>Admin Panel</h5>
-                    <Link to={ `${url}/ManageAllOrders` }> <Button variant="text">Manage All Orders</Button> </Link>
-                    <Link to={ `${url}/AddAProduct` }> <Button variant="text">Add A Product</Button> </Link>
-                    <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
-                    <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
+                        <Link to="/"><Button variant="text">Back To Home</Button> </Link>
+                        <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link>
+                        <Link to={ `${url}/ManageAllOrders` }> <Button variant="text">Manage All Orders</Button> </Link>
+                        <Link to={ `${url}/AddAProduct` }> <Button variant="text">Add A Product</Button> </Link>
+                        <Link to={ `${url}/MakeAdmin` }> <Button variant="text">Make Admin</Button> </Link>
+                        <Link to={ `${url}/ManageProducts` }> <Button variant="text">Manage Products</Button> </Link>
+                    </ButtonGroup>
 
-                    {/* For User */ }
-                    <h5>Use Panel</h5>
-                    <Link to={ `${url}/Pay` }> <Button variant="text">Pay</Button> </Link><br />
-                    <Link to={ `${url}/MyOrders` }> <Button variant="text">My Orders</Button> </Link><br />
-                    <Link to={ `${url}/Review` }> <Button variant="text">Review</Button> </Link>
                 </Box>
 
-                :
-                <p></p>
+                : <ButtonGroup
+                    className="btn-group"
+                    orientation="vertical"
+                    aria-label="vertical outlined button group"
+                >
+                    {/* For User */ }
+                    <h5>Use Panel</h5>
+
+                    <Link to="/"><Button variant="text">Back To Home</Button> </Link>
+                    <Link to={ `${url}` }> <Button variant="text">Dashboard</Button>  </Link>
+                    <Link to={ `${url}/Pay` }> <Button variant="text">Pay</Button> </Link>
+                    <Link to={ `${url}/MyOrders` }> <Button variant="text">My Orders</Button> </Link>
+                    <Link to={ `${url}/Review` }> <Button variant="text">Review</Button> </Link>
+                </ButtonGroup>
             }
             <br />
 
@@ -117,6 +128,7 @@ function Dashboard(props) {
                 aria-label="mailbox folders"
             >
                 <Drawer
+                    className="drawer-bg"
                     container={ container }
                     variant="temporary"
                     open={ mobileOpen }

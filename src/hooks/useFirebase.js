@@ -47,11 +47,12 @@ const useFirebase = () => {
 
     }
     const loginUser = (email, password, location, history) => {
+        // console.log(email, password, location, history);
         setIsLoading(true);
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                const destination = location?.state?.from || '/';
-                history.replace(destination);
+                const destination = location?.state?.from || 'Dashboard';
+                history.push(destination);
                 setAuthError('');
                 // const user = userCredential.user;
                 // ...
@@ -77,12 +78,12 @@ const useFirebase = () => {
                 setAuthError(error.message);
             }).finally(() => setIsLoading(false));
     }
-
+    // console.log(user?.email);
     useEffect(() => {
-        fetch(`http://localhost:5000/users/${user.email}`)
+        fetch(`https://still-bastion-57482.herokuapp.com/users/${user?.email}`)
             .then(res => res.json())
             .then(data => setAdmin(data.admin))
-    }, [user.email])
+    }, [user?.email])
 
 
     // Observe user State 
@@ -114,7 +115,7 @@ const useFirebase = () => {
 
     const saveUser = (email, displayName, method) => {
         const user = { email, displayName };
-        fetch('http://localhost:5000/users', {
+        fetch('https://still-bastion-57482.herokuapp.com/users', {
             method: method,
             headers: {
                 'content-type': 'application/json'

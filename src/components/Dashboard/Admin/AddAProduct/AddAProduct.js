@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useLocation } from 'react-router'; 
+import { useHistory, useLocation } from 'react-router';
 import './AddProducts.css';
 
 const AddAProduct = () => {
@@ -12,7 +12,7 @@ const AddAProduct = () => {
     const { register, handleSubmit } = useForm();
     const redirect_uri = location.state?.from || '/products';
     const onSubmit = data => {
-        axios.post('http://localhost:5000/products', data)
+        axios.post('https://still-bastion-57482.herokuapp.com/products', data)
             .then(res => {
                 console.log(res)
                 if (res.data.insertedId) {
@@ -24,6 +24,9 @@ const AddAProduct = () => {
     return (
         <div className="p-5 mt-5 addproducts">
 
+            <h2 className="mt-2">Please  add a Products</h2>
+            <hr />
+            <hr />
             <form onSubmit={ handleSubmit(onSubmit) }>
                 <input { ...register("name", { required: true }) } placeholder="Title" />
                 <input type="number" { ...register("price",) } placeholder="Price" />

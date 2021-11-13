@@ -18,19 +18,19 @@ const Login = (e) => {
         const newLoginData = { ...loginData };
         newLoginData[field] = value;
         setLoginData(newLoginData);
-        console.log(loginData);
+        // console.log(loginData);
     }
     const handleLoginSubmit = (e) => {
-        loginUser(loginData.email, loginData.password, location, history);
-        alert('Hello')
         e.preventDefault();
+        loginUser(loginData.email, loginData.password, location, history);
+        alert('Login Successful')
     }
     const handleGoogleSignIn = () => {
         signInWithGoogle(location, history)
     }
     return (
         <Container>
-            <Grid container spacing={ 2 } sx={ { justifyContent: 'center', alignItems: 'center' } }>
+            <Grid container spacing={ 2 } sx={ { justifyContent: 'center', alignItems: 'center', padding: '30px' } }>
                 <Grid item xs={ 12 } md={ 6 }>
                     <Typography variant="body1" gutterBottom>
                         Login
@@ -40,7 +40,7 @@ const Login = (e) => {
                             sx={ { width: '75%', m: 1 } }
                             id="standard-basic"
                             name="email"
-                            onChange={ handleOnChange }
+                            onBlur={ handleOnChange }
                             label="Your Email"
                             variant="standard" />
                         <TextField
@@ -48,7 +48,7 @@ const Login = (e) => {
                             type="password"
                             id="standard-basic"
                             name="password"
-                            onChange={ handleOnChange }
+                            onBlur={ handleOnChange }
                             label="Your Password"
                             variant="standard" />
 
@@ -80,7 +80,7 @@ const Login = (e) => {
                     <Button onClick={ handleGoogleSignIn } variant="contained">Google Sign In</Button>
                 </Grid>
                 <Grid item xs={ 12 } md={ 6 }>
-                    <img style={ { width: '100%' } } src="https://www.kindpng.com/picc/m/393-3938892_get-in-touch-get-in-touch-png-transparent.png" alt="" />
+                    <img style={ { width: '100%' } } src="https://innovationatwork.ieee.org/wp-content/uploads/2020/12/image-from-rawpixel-id-1029356-original_1024X684.png" alt="" />
                 </Grid>
             </Grid>
         </Container>

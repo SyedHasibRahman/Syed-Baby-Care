@@ -29,7 +29,7 @@ const Registration = () => {
     }
     return (
         <Container>
-            <Grid container spacing={ 2 } sx={ { justifyContent: 'center', alignItems: 'center' } }>
+            <Grid container spacing={ 2 } sx={ { justifyContent: 'center', alignItems: 'center', padding: '30px' } }>
                 <Grid item xs={ 12 } md={ 6 }>
                     <Typography variant="body1" gutterBottom>
                         Register
@@ -95,7 +95,7 @@ const Registration = () => {
 
                 </Grid>
                 <Grid item xs={ 12 } md={ 6 }>
-                    <img style={ { width: '100%' } } src="https://www.kindpng.com/picc/m/393-3938892_get-in-touch-get-in-touch-png-transparent.png" alt="" />
+                    <img style={ { width: '100%' } } src="https://innovationatwork.ieee.org/wp-content/uploads/2020/12/image-from-rawpixel-id-1029356-original_1024X684.png" alt="" />
                 </Grid>
             </Grid>
         </Container>

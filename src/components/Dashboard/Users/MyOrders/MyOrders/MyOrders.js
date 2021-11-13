@@ -9,7 +9,7 @@ const MyOrders = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/myorders/?email=${user.email}`)
+        fetch(`https://still-bastion-57482.herokuapp.com/myorders/?email=${user.email}`)
             .then(res => res.json())
             .then(data => setproduct(data))
     }, [user.email]);
@@ -17,7 +17,7 @@ const MyOrders = () => {
     const handleDelete = id => {
         const deleteMassege = window.confirm("Delete the item?");
         // if (deleteMassege) {
-        const url = `http://localhost:5000/orders/${id}`;
+        const url = `https://still-bastion-57482.herokuapp.com/orders/${id}`;
         fetch(url, {
             method: 'DELETE'
         })
@@ -56,7 +56,7 @@ const MyOrders = () => {
                                                 <p className="card-title">{ product._id }</p>
                                                 <p className="card-text"> { product.discription }</p>
                                                 <p className="card-title">{ product._id }</p>
-                                                <input type="text" defaultValue={ product.status }></input>
+                                                <button className="btn-success">{product.status}</button>
                                             </div>
                                             <div className="card-footer">
 

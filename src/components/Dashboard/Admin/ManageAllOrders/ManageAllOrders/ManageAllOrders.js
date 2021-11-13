@@ -7,7 +7,7 @@ const ManageAllOrders = () => {
     const [status, setStatus] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:5000/orders')
+        fetch('https://still-bastion-57482.herokuapp.com/orders')
             .then(res => res.json())
             .then(data => setOrders(data))
     }, []);
@@ -19,7 +19,7 @@ const ManageAllOrders = () => {
 
     }
     const handleUpdate = id => {
-        fetch(`http://localhost:5000/updateStatus/${id}`, {
+        fetch(`https://still-bastion-57482.herokuapp.com/updateStatus/${id}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json"
@@ -40,6 +40,7 @@ const ManageAllOrders = () => {
         <div className="mt-5 MyOrders container">
             <div className="container">
                 <div className="row">
+                    <h2 className="mt-5">Welcome to Manage All Order</h2>
                     <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 g-4">
                         {
                             orders.map(order => <div className="p-2 border border-info"

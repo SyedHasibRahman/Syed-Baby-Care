@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const ServicesForHome = () => {
     const [services, setServices] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/productsforhome')
+        fetch('https://still-bastion-57482.herokuapp.com/productsforhome')
             .then(res => res.json())
             .then(data => setServices(data));
     }, []);
