@@ -5,6 +5,7 @@ import './ManageAllOrders';
 const ManageAllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [status, setStatus] = useState('');
+    const [products, setproduct] = useState([]);
 
     useEffect(() => {
         fetch('https://still-bastion-57482.herokuapp.com/orders')
@@ -18,6 +19,27 @@ const ManageAllOrders = () => {
         setStatus(e.target.value);
 
     }
+
+    const handleDelete = id => {
+        const deleteMassege = window.confirm("Delete the item?");
+        if (deleteMassege) {
+            const url = `https://still-bastion-57482.herokuapp.com/orders/${id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.deletedCount > 0) {
+                        const remaining = products.filter(product => product._id !== id);
+                        setproduct(remaining);
+
+                    }
+
+                })
+        }
+
+    }
     const handleUpdate = id => {
         fetch(`https://still-bastion-57482.herokuapp.com/updateStatus/${id}`, {
             method: "PUT",
@@ -28,11 +50,6 @@ const ManageAllOrders = () => {
         })
     }
     // console.log(status);
-    const handleDelete = id => {
-
-
-    }
-
 
 
     // -------------Delete Confirmation  
