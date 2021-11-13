@@ -80,9 +80,11 @@ const useFirebase = () => {
     }
     // console.log(user?.email);
     useEffect(() => {
-        fetch(`https://still-bastion-57482.herokuapp.com/users/${user?.email}`)
-            .then(res => res.json())
-            .then(data => setAdmin(data.admin))
+        if (![]) {
+            fetch(`https://still-bastion-57482.herokuapp.com/users/${user?.email}`)
+                .then(res => res.json())
+                .then(data => setAdmin(data.admin))
+        }
     }, [user?.email])
 
 
@@ -105,6 +107,7 @@ const useFirebase = () => {
     }, [auth])
     const logOut = () => {
         signOut(auth).then(() => {
+            setUser({})
             // Sign-out successful.
         }).catch((error) => {
             setAuthError(error.message);
@@ -123,6 +126,7 @@ const useFirebase = () => {
         })
             .then(res => res.json())
     }
+
 
     return {
         user,

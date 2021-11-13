@@ -82,16 +82,14 @@ function Dashboard(props) {
             }
             <br />
 
-            <Link>
-                { user?.email ?
-                    <button onClick={ logOut } className="btn btn-light">LogOut </button> :
-                    <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
-                }
-                <span className="text-danger">
-                    <br />
-                    <small>{ user?.displayName }</small>
-                </span>
-            </Link>
+            { user?.email ?
+                <button onClick={ logOut } className="btn btn-light">LogOut </button> :
+                <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
+            }
+            <span className="text-danger">
+                <br />
+                <small>{ user?.displayName }</small>
+            </span>
         </div >
     );
 
