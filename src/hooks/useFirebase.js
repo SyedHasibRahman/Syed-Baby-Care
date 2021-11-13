@@ -80,11 +80,9 @@ const useFirebase = () => {
     }
     // console.log(user?.email);
     useEffect(() => {
-        if (![]) {
-            fetch(`https://still-bastion-57482.herokuapp.com/users/${user?.email}`)
-                .then(res => res.json())
-                .then(data => setAdmin(data.admin))
-        }
+        fetch(`https://still-bastion-57482.herokuapp.com/users/${user?.email}`)
+            .then(res => res.json())
+            .then(data => setAdmin(data.admin))
     }, [user?.email])
 
 
